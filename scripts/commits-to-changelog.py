@@ -42,11 +42,13 @@ def changelogs_for_file_pattern (pattern, changed_files):
     changelogs = set ()
     for filename in changed_files:
         suffix = filename
-        while suffix != "":
+	if fnmatch.fnmatch (suffix, pattern):
+                changelogs.add (changelog_for_file (filename))
+        while '/' in suffix:
             # FIXME: fnmatch doesn't support the {x,y} pattern
             if fnmatch.fnmatch (suffix, pattern):
                 changelogs.add (changelog_for_file (filename))
-            (_, _, suffix) = suffix.partition ("/")
+            (_, suffix) = suffix.split('/',1)
     return changelogs
 
 def format_paragraph (paragraph):
@@ -189,7 +191,8 @@ def process_commit (commit):
             if current_files:
                 file_entries.append ((current_files, current_files_comments))
 
-            (files, _, comments) = line.partition (":")
+            #(files, _, comments) = line.partition (":")
+            (files,comments) = line.split(':',1)
 
             current_files_comments = [comments.strip ()]
 
