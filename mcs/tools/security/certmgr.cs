@@ -472,7 +472,8 @@ namespace Mono.Tools {
 							if (!signed)
 								Console.WriteLine ("   *** WARNING: Certificate signature is INVALID ***");
 						}
-						catch {
+						catch (Exception err) {
+							Console.WriteLine(err.Message);
 							failed = true;
 						}
 					}
