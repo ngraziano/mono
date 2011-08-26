@@ -173,9 +173,13 @@ namespace System.ServiceModel.Channels.Http
 		public HttpStandaloneRequestInfo (HttpListenerRequest request)
 		{
 			this.req = request;
+			this.clientIPAddress = req.RemoteEndPoint.Address.ToString();
+			this.clientPort =  req.RemoteEndPoint.Port;
 		}
 		
 		HttpListenerRequest req;
+		private string clientIPAddress;
+		private int clientPort;
 
 		public override long ContentLength64 {
 			get { return req.ContentLength64; }
@@ -199,10 +203,10 @@ namespace System.ServiceModel.Channels.Http
 			get { return req.InputStream; }
 		}
 		public override string ClientIPAddress {
-			get { return req.RemoteEndPoint.Address.ToString (); }
+			get { return clientIPAddress; }
 		}
 		public override int ClientPort {
-			get { return req.RemoteEndPoint.Port; }
+			get { return clientPort; }
 		}
 	}
 
